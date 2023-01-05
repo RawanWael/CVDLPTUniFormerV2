@@ -14,6 +14,7 @@ from fvcore.nn.flop_count import flop_count
 from iopath.common.file_io import g_pathmgr
 from matplotlib import pyplot as plt
 from torch import nn
+import pdb
 
 import slowfast.utils.logging as logging
 import slowfast.utils.multiprocessing as mpu
@@ -163,6 +164,7 @@ def get_model_stats(model, cfg, mode, use_train_input):
     model_mode = model.training
     model.eval()
     inputs = _get_model_analysis_input(cfg, use_train_input)
+    #pdb.set_trace()
     count_dict, *_ = model_stats_fun(model, inputs)
     count = sum(count_dict.values())
     model.train(model_mode)

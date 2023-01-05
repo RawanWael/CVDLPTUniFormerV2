@@ -8,20 +8,28 @@ from torch import nn
 from torch.nn import MultiheadAttention
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
-
+import pdb
 
 import slowfast.utils.logging as logging
 
 logger = logging.get_logger(__name__)
 
 
-MODEL_PATH = '/mnt/lustre/share_data/likunchang/model'
+#MODEL_PATH = '/mnt/lustre/share_data/likunchang/model'
+MODEL_PATH = '/CVDLPT/UniFormerV2/try'
 _MODELS = {
     "ViT-B/16": os.path.join(MODEL_PATH, "vit_b16.pth"),
     "ViT-L/14": os.path.join(MODEL_PATH, "vit_l14.pth"),
     "ViT-L/14_336": os.path.join(MODEL_PATH, "vit_l14_336.pth"),
 }
 
+#Jubran
+#MODEL_PATH = '/CVDLPT/UniFormerV2/try'
+#_MODELS = {
+#    "ViT-B/16": '/CVDLPT/UniFormerV2/try/k400_k710_uniformerv2_l14_32x336.pyth',
+#    "ViT-L/14": '/CVDLPT/UniFormerV2/try/k400_k710_uniformerv2_l14_32x336.pyth',
+#    "ViT-L/14_336": '/CVDLPT/UniFormerV2/try/k400_k710_uniformerv2_l14_32x336.pyth',
+#}
 
 class LayerNorm(nn.LayerNorm):
     """Subclass torch's LayerNorm to handle fp16."""
@@ -346,6 +354,7 @@ def inflate_weight(weight_2d, time_dim, center=True):
 def load_state_dict(model, state_dict):
     state_dict_3d = model.state_dict()
     for k in state_dict.keys():
+        #pdb.set_trace()
         if state_dict[k].shape != state_dict_3d[k].shape:
             if len(state_dict_3d[k].shape) <= 2:
                 logger.info(f'Ignore: {k}')
@@ -395,7 +404,7 @@ def uniformerv2_b16(
     )
 
     if pretrained:
-        logger.info('load pretrained weights')
+        logger.info('load pretrained weights ')
         state_dict = torch.load(_MODELS["ViT-B/16"], map_location='cpu')
         load_state_dict(model, state_dict)
     return model.eval()
@@ -486,6 +495,7 @@ def uniformerv2_l14_336(
 
     if pretrained:
         logger.info('load pretrained weights')
+        #pdb.set_trace()
         state_dict = torch.load(_MODELS["ViT-L/14_336"], map_location='cpu')
         load_state_dict(model, state_dict)
     return model.eval()

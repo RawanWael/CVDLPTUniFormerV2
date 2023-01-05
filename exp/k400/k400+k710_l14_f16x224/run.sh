@@ -1,9 +1,10 @@
 NUM_SHARDS=4
-NUM_GPUS=8
+NUM_GPUS=1
 BATCH_SIZE=64
 BASE_LR=1.5e-6
 PYTHONPATH=$PYTHONPATH:./slowfast \
-python tools/run_net_multi_node.py \
+#work_path='/CVDLPT/UniFormerV2/exp/k400/k400+k710_l14_f16x224'
+python3 tools/run_net_multi_node.py \
   --init_method tcp://localhost:10125 \
   --cfg $work_path/config.yaml \
   --num_shards $NUM_SHARDS \

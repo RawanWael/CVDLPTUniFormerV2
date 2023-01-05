@@ -1,14 +1,13 @@
 NUM_SHARDS=1
-NUM_GPUS=8
+NUM_GPUS=1
 BATCH_SIZE=256
 BASE_LR=1e-5
 PYTHONPATH=$PYTHONPATH:./slowfast \
-python tools/run_net_multi_node.py \
+python3 tools/run_net_multi_node.py \
   --init_method tcp://localhost:10125 \
-  --cfg $work_path/config.yaml \
+  --cfg /CVDLPT/CVDLPTUniFormerV2/exp/k400/k400_b16_f8x224/config.yaml \
   --num_shards $NUM_SHARDS \
-  DATA.PATH_TO_DATA_DIR ./data_list/k400 \
-  DATA.PATH_PREFIX you_data_path/k400 \
+  DATA.PATH_TO_DATA_DIR ./dataset  \
   DATA.PATH_LABEL_SEPARATOR "," \
   TRAIN.EVAL_PERIOD 1 \
   TRAIN.CHECKPOINT_PERIOD 100 \
@@ -27,4 +26,5 @@ python tools/run_net_multi_node.py \
   TEST.ADD_SOFTMAX True \
   TEST.BATCH_SIZE 128 \
   RNG_SEED 6666 \
-  OUTPUT_DIR $work_path
+  TEST.CHECKPOINT_FILE_PATH /CVDLPT/pretrained_model \
+  OUTPUT_DIR /CVDLPT/CVDLPTUniFormerV2
